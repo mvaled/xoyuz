@@ -1,2 +1,6 @@
 *.egg-info/
 dist/
+
+bin/
+.*.cfg
+develop-eggs/
