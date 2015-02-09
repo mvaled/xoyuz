@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------
 # xoyuz.compilers
 # --------------------------------------------------------------------------
-# Copyright (c) 2014 Merchise Autrement and Contributors
+# Copyright (c) 2014, 2015 Merchise Autrement and Contributors
 # All rights reserved.
 #
 # Author: Eddy Ernesto del Valle Pino <eddy@merchise.org>
@@ -42,13 +42,8 @@ def source_file_required(compiler):
 
 @source_file_required
 def closure(source_file, ext):
-    return check_output(
-        [
-            'closure-compiler',
-            '--warning_level', 'QUIET',
-            source_file,
-        ]
-    )
+    return check_output(['closure-compiler', '--warning_level', 'QUIET',
+                         source_file, ])
 
 
 @source_file_required

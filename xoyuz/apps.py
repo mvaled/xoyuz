@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------
 # xoyuz.apps
 # --------------------------------------------------------------------------
-# Copyright (c) 2014 Merchise Autrement and Contributors
+# Copyright (c) 2014, 2015 Merchise Autrement and Contributors
 # All rights reserved.
 #
 # Author: Eddy Ernesto del Valle Pino <eddy@merchise.org>
@@ -20,13 +20,12 @@ from __future__ import (absolute_import as _py3_abs_imports,
                         unicode_literals as _py3_unicode)
 
 from xoutil import fs
+from importlib import import_module
 
 from django.apps import AppConfig
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-
-from IPython.utils.importstring import import_item
 
 
 class XoyuzConfig(AppConfig):
@@ -60,15 +59,17 @@ class XoyuzConfig(AppConfig):
 
     @property
     def js_compiler(self):
-        return import_item(
-            getattr(settings, 'XOYUZ_JS_COMPILER', 'xoyuz.compilers.closure')
-        )
+        compiler = getattr(settings, 'XOYUZ_JS_COMPILER',
+                           'xoyuz.compilers:closure')
+        module, name = compiler.split(':')
+        return getattr(import_module(module), name)
 
     @property
     def css_compiler(self):
-        return import_item(
-            getattr(settings, 'XOYUZ_CSS_COMPILER', 'xoyuz.compilers.css_min')
-        )
+        compiler = getattr(settings, 'XOYUZ_CSS_COMPILER',
+                           'xoyuz.compilers:css_min')
+        module, name = compiler.split(':')
+        return getattr(import_module(module), name)
 
     def register_bundle(self, name, *args, **kwargs):
         from .bundle import Bundle
